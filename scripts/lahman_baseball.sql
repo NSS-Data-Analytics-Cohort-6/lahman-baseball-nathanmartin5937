@@ -94,6 +94,44 @@ where yearid >= '1920'
 group by decade
 order by decade DESC;
 
+/*Find the player who had the most success stealing bases in 2016, where success is measured as 
+the percentage of stolen base attempts which are successful. 
+(A stolen base attempt results either in a stolen base or being caught stealing.) Consider 
+only players who attempted at least 20 stolen bases.
+owingch01, 91.30434782608695652200*/
+
+select ((CAST(sb as numeric)/(sb+cs))*100) as stolen_base_attempts, playerid
+from batting
+where yearid = '2016' and sb+cs > 19
+order by stolen_base_attempts desc;
+
+/*From 1970 – 2016, what is the largest number of wins for a team that did not win the world series? 
+What is the smallest number of wins for a team that did win the world series? Doing this will probably 
+result in an unusually small number of wins for a world series champion – determine why this is the case. 
+Then redo your query, excluding the problem year. How often from 1970 – 2016 was it the case that a team with 
+the most wins also won the world series? What percentage of the time?
+1. SEA, 116 2. LAN, 63 3. */
+
+select MAX(w) as wins, teamid
+from teams
+where wswin = 'N' and yearid between '1970' and '2016'
+group by yearid, teamid
+order by wins desc;
+
+select MIN(w) as wins, teamid
+from teams
+where wswin = 'Y' and yearid between '1970' and '2016'
+group by yearid, teamid
+order by wins;
+
+select MAX(w) as max_wins, teamid, yearid, wswin
+from teams
+where yearid between '1970' and '2016'
+group by teamid, yearid, wswin
+order by yearid, max_wins desc;
+
+
+
 
 
 
