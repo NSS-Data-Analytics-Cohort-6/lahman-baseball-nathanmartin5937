@@ -44,7 +44,14 @@ limit 1;
 position OF as "Outfield", those with position "SS", "1B", "2B", and "3B" as "Infield", 
 and those with position "P" or "C" as "Battery". Determine the number of putouts made by each of these three groups in 2016.*/
 
-
+select SUM(po), 
+	case when pos = 'of' then 'outfield'
+		 when pos = 'ss' or pos = '1b' or pos = '2b' or pos = '3b' then 'infield'
+		 when pos = 'p' or pos = 'c' then 'battery'
+		 end as position
+from fielding 
+where yearid = 2016
+group by position;      /*credit Lulia*/
 
 /*Find the average number of strikeouts per game by decade since 1920. 
 Round the numbers you report to 2 decimal places. Do the same for home runs per game. 
